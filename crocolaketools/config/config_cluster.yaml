@@ -6,25 +6,36 @@
 
 # Argo
 ARGO-QC_PHY:
-    threads_per_worker: 1
-    n_workers: 4
-    memory_limit: '2GB'
+    threads_per_worker: 36
+    n_workers: 1
+    memory_limit: '144GB'
     processes: True
+    dashboard_address: 'localhost:8787'
 
 ARGO-QC_BGC:
-    threads_per_worker: 9
-    n_workers: 4
-    memory_limit: '36GiB' # memory limit per worker
+    threads_per_worker: 1
+    n_workers: 9
+    memory_limit: '16GiB' # memory limit per worker
     processes: True
+    dashboard_address: 'localhost:8787'
 
 SPRAY_GLIDERS:
-    threads_per_worker: 4
+    threads_per_worker: 1
     n_workers: 1
-    memory_limit: '12GB'
+    memory_limit: '144GiB'
     processes: True
+    dashboard_address: 'localhost:8787'
 
 GLODAP:
-    threads_per_worker: 20
+    threads_per_worker: 12
     n_workers: 1
-    memory_limit: '12GB'
+    memory_limit: '144GiB'
     processes: True
+    dashboard_address: 'localhost:8787'
+
+CROCOLAKE:
+    threads_per_worker: 1
+    n_workers: 9
+    memory_limit: '16GB'
+    processes: True
+    dashboard_address: 'localhost:8787'

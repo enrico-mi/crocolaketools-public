@@ -18,25 +18,25 @@
 CROCOLAKE_PHY:
   db: CROCOLAKE
   db_type: PHY
-  outdir_pq: ../demo/parquet/demo_CROCOLAKE_PHY/
-  fname_pq: PHY_CROCOLAKE
-  ln_path: ../demo/parquet/demo_CROCOLAKE_PHY_LN/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/0007_PHY_CROCOLAKE-QC-MERGED/current/
+  fname_pq: 0007_PHY_CROCOLAKE
+  ln_path: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/0003_PHY_CROCOLAKE-QC/current/
 
 CROCOLAKE_BGC:
   db: CROCOLAKE
   db_type: BGC
-  outdir_pq: ../demo/parquet/demo_CROCOLAKE_BGC/
-  fname_pq: BGC_CROCOLAKE
-  ln_path: ../demo/parquet/demo_CROCOLAKE_BGC_LN/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/0007_BGC_CROCOLAKE-QC-MERGED/current/
+  fname_pq: 0007_BGC_CROCOLAKE
+  ln_path: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/0003_BGC_CROCOLAKE-QC/current/
 
 # Argo QC
 ARGO_PHY:
   db: ARGO
   db_type: PHY
-  input_path: ../demo/demo_ARGO_PQT_PHY/
-  outdir_pq: ../demo/parquet/demo_ARGO-QC_PHY/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1011_PHY_ARGO-CLOUD/current
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1003_PHY_ARGO-QC/current/
   outdir_schema: ./schema/
-  fname_pq: demo_ARGO-QC_PHY
+  fname_pq: 1003_ARGO-QC_PHY
   add_derived_vars: True
   overwrite: True
   tmp_path:
@@ -44,10 +44,10 @@ ARGO_PHY:
 ARGO_BGC:
   db: ARGO
   db_type: BGC
-  input_path: ../demo/demo_ARGO_PQT_BGC/
-  outdir_pq: ../demo/parquet/demo_ARGO-QC_BGC/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1011_BGC_ARGO-CLOUD/current
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1003_BGC_ARGO-QC/current/
   outdir_schema: ./schema/
-  fname_pq: demo_ARGO-QC_BGC
+  fname_pq: 1003_ARGO-QC_BGC
   add_derived_vars: True
   overwrite: True
   tmp_path:
@@ -56,60 +56,83 @@ ARGO_BGC:
 ARGO-GDAC_PHY:
   db: ARGO-GDAC
   db_type: PHY
-  input_path: ../demo/demo_ARGO_GDAC/GDAC/dac/
-  outdir_pq: ../demo/parquet/demo_ARGO-GDAC_PHY/
+  input_path: /proj/boom/users/enrico.milanese/crocolaketools-public-fork/data/GDAC/dac/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1011_PHY_ARGO-CLOUD/current/
 
 ARGO-GDAC_BGC:
   db: ARGO-GDAC
   db_type: BGC
-  input_path: ../demo/demo_ARGO_GDAC/GDAC/dac/
-  outdir_pq: ../demo/parquet/demo_ARGO-GDAC_BGC/
+  input_path: /proj/boom/users/enrico.milanese/crocolaketools-public-fork/data/GDAC/dac/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1011_BGC_ARGO-CLOUD/current/
 
 # GLODAP config
 GLODAP_PHY:
   db: GLODAP
   db_type: PHY
-  input_path: ../demo/demo_GLODAP/
-  outdir_pq: ../demo/parquet/demo_GLODAP_PHY/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v2.2023/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1101_PHY_GLODAP/current/
   outdir_schema: ./schema/
-  fname_pq: demo_GLODAP_PHY
-  add_derived_vars: False
-  overwrite: False
+  fname_pq: 1101_GLODAP_PHY
+  add_derived_vars: True
+  overwrite: True
   tmp_path:
 
 GLODAP_BGC:
   db: GLODAP
   db_type: BGC
-  input_path: ../demo/demo_GLODAP/
-  outdir_pq: ../demo/parquet/demo_GLODAP_BGC/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v2.2023/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1101_BGC_GLODAP/current/
   outdir_schema: ./schema/
-  fname_pq: demo_GLODAP_BGC
+  fname_pq: 1101_GLODAP_BGC
   add_derived_vars: True
-  overwrite: False
+  overwrite: True
   tmp_path:
 
 # Spray Gliders
 SprayGliders_PHY:
   db: SprayGliders
   db_type: PHY
-  input_path: ../demo/demo_SPRAY_PHY/
-  outdir_pq: ../demo/parquet/demo_SPRAY_PHY/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/SprayGliders/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1201_PHY_SPRAY/current/
   outdir_schema: ./schemas/
-  fname_pq: demo_SPRAY_PHY
+  fname_pq: 1201_SPRAY_PHY
   add_derived_vars: True
-  overwrite: False
-  tmp_path: ../demo/demo_tmp_SPRAY_PHY/
+  overwrite: True
+  tmp_path: /vortexfs1/share/boom/users/enrico.milanese/tmp_spray_phy/
 
 SprayGliders_BGC:
   db: SprayGliders
   db_type: BGC
-  input_path: ../demo/demo_SPRAY_BGC/
-  outdir_pq: ../demo/parquet/demo_SPRAY_BGC/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/SprayGliders/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1201_BGC_SPRAY/current/
   outdir_schema: ./schemas/
-  fname_pq: demo_SPRAY_BGC
+  fname_pq: 1201_SPRAY_BGC
   add_derived_vars: True
-  overwrite: False
-  tmp_path: ../demo/demo_tmp_SPRAY_BGC/
+  overwrite: True
+  tmp_path: /vortexfs1/share/boom/users/enrico.milanese/tmp_spray_bgc/
+
+# Saildrones
+Saildrones_PHY:
+  db: Saildrones
+  db_type: PHY
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/Saildrones/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1300_PHY_SAILDRONES/current/
+  outdir_schema: ./schemas/Saildrones/
+  fname_pq: 1300_SAILDRONES_PHY
+  add_derived_vars: True
+  overwrite: True
+  tmp_path:
+
+Saildrones_BGC:
+  db: Saildrones
+  db_type: BGC
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/Saildrones/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1300_BGC_SAILDRONES/current/
+  outdir_schema: ./schemas/Saildrones/
+  fname_pq: 1300_SAILDRONES_BGC
+  add_derived_vars: True
+  overwrite: True
+  tmp_path:
 
 # Default relative path for demo data download
 demo:
