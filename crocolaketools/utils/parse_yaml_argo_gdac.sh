@@ -5,7 +5,8 @@ set -e
 set -o pipefail
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
-yaml_file="${SCRIPT_DIR}""/config.yaml"
+CONFIG_DIR=$(realpath "${SCRIPT_DIR}/../config")
+yaml_file="${CONFIG_DIR}""/config.yaml"
 argo_variants=(
   "PHY"
   "BGC"
@@ -28,15 +29,19 @@ for var in "${argo_variants[@]}"; do
 
     IN_PATH=$(yq ".\"ARGO-GDAC_${var}\".input_path" "$yaml_file")
     IN_PATH=$(echo "$IN_PATH" | sed 's/^"//;s/"$//')
-    IN_PATH=$(realpath "${CONFIG_DIR}/${IN_PATH}")
+    if resolved_path=$(realpath "${CONFIG_DIR}/${IN_PATH}" 2>/dev/null); then
+        IN_PATH="$resolved_path"
+    else
+        IN_PATH="${IN_PATH}"
+    fi
 
     OUT_PATH=$(yq ".\"ARGO-GDAC_${var}\".outdir_pq" "$yaml_file")
     OUT_PATH=$(echo "$OUT_PATH" | sed 's/^"//;s/"$//')
-    OUT_PATH=$(realpath "${CONFIG_DIR}/${OUT_PATH}")
-
-    echo "Processing $var"
-    echo "Input path: $IN_PATH"
-    echo "Output path: $OUT_PATH"
+    if resolved_path=$(realpath "${CONFIG_DIR}/${OUT_PATH}" 2>/dev/null); then
+        OUT_PATH="$resolved_path"
+    else
+        OUT_PATH="${OUT_PATH}"
+    fi
 
     echo "${var}|${IN_PATH}|${OUT_PATH}"
 
