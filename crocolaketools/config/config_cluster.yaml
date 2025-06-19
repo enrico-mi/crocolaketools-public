@@ -27,11 +27,11 @@ SPRAY_GLIDERS:
     dashboard_address: 'localhost:8787'
 
 GLODAP:
-    threads_per_worker: 12
-    n_workers: 1
+    threads_per_worker: 2
+    n_workers: 12
     memory_limit: '144GiB'
     processes: True
-    dashboard_address: 'localhost:8787'
+    dashboard_address: 'localhost:8788'
 
 CROCOLAKE:
     threads_per_worker: 1
