@@ -10,8 +10,6 @@
 ##########################################################################
 import os
 import warnings
-# import dask
-# dask.config.set(temporary_directory="/home/enrico/myWHOI/CrocoLake/ctp-fork/tmp_dask")
 import dask.dataframe as dd
 import gsw
 import numpy as np
@@ -130,6 +128,8 @@ class ConverterGLODAP(Converter):
         )
         ddf = ddf.persist()
 
+        ddf['date_update'] = np.datetime64('2023-10-18T13:01:04.000000000')
+
         # return standardized dataframe
         return super().standardize_data(ddf)
 
@@ -144,7 +144,6 @@ class ConverterGLODAP(Converter):
         )
         # persisting and repartitioning to minimize chances of empty partitions
         ddf = ddf.persist()
-        #ddf = ddf.repartition(partition_size="100MB")
 
         def compute_hash(df, cols, hash_col="hash"):
             # gives unique hash for each sequence of values of columns cols
