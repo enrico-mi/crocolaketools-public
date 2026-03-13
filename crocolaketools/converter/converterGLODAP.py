@@ -131,15 +131,32 @@ class ConverterGLODAP(Converter):
         params_to_check = []
         for param in params.params["GLODAP2CROCOLAKE"].keys():
             if param.startswith("G2") and param.endswith("f") and param in ddf.columns:
+                print(f"Keeping best values for {param}...")
                 ddf = ddf.map_partitions(
-                    self.keep_best_values, param
+                    self.keep_best_values, param, meta = ddf._meta
                 )
                 params_to_check.append(param[:-1])
+            else:
+                print(f"Not checking best values for {param}.")
+        ddf = ddf.persist()
+
+        # check that pressure, temperature, are not -9999 (i.e. missing in GLODAP conventions)
+        ddf = ddf.map_partitions(
+            self.keep_best_pres_temp, meta = ddf._meta
+        )
+        params_to_check.append('G2temperature')
+        ddf = ddf.persist()
+        
+        # remove rows where pressure is NA
+        ddf = ddf.map_partitions(
+            super().remove_all_NAs, ['G2pressure'], meta = ddf._meta
+        )
         ddf = ddf.persist()
 
         # remove rows containing all NAs
+        print(f"Checking the following parameters to remove rows where they are all NAs: {params_to_check}")
         ddf = ddf.map_partitions(
-            super().remove_all_NAs, params_to_check
+            super().remove_all_NAs, params_to_check, meta = ddf._meta
         )
         ddf = ddf.persist()
 
@@ -296,11 +313,32 @@ class ConverterGLODAP(Converter):
 
         # GLODAP's quality control columns end with "f" (e.g. "nitratef")
         # and good values are 0 or 2
-        condition = df[param].isin([0,2])
+        good_qc = df[param].isin([0,2])
+        bad_qc = ~good_qc
 
         # Find bad QC values
-        df.loc[condition, param] = pd.NA
-        df.loc[condition, param[:-1]] = pd.NA
+        df.loc[bad_qc, param] = pd.NA
+        df.loc[bad_qc, param[:-1]] = pd.NA
+
+        return df
+
+#------------------------------------------------------------------------------#
+## Keep best values for pressure, temperature
+    def keep_best_pres_temp(self,df):
+        """Keep the best observation available for each row
+
+        Arguments:
+        df -- a row or a partition of a pandas dataframe
+
+        Returns:
+        df  --  updated dataframe
+
+        """
+
+        # GLODAP's missing values for pressure and salinity are -999.0 in paper;
+        # dataset actually has -9999 and also for temperature
+        params = ['G2temperature','G2pressure']
+        df[params] = df[params].replace(-9999.0, pd.NA)
 
         return df
 
