@@ -22,6 +22,7 @@ import pyarrow.parquet as pq
 import shutil
 import xarray as xr
 from crocolakeloader import params
+from crocolaketools.converter import units_conversion
 ##########################################################################
 
 
@@ -174,6 +175,9 @@ class Converter:
         # dask dataframe
         self.call_guess_schema = False
 
+        # Initialize unit conversion mapping - override in subclasses
+        self.cols_to_convert = {"skip": "skip"}
+
     # ------------------------------------------------------------------ #
     # Methods                                                            #
     # ------------------------------------------------------------------ #
@@ -232,23 +236,21 @@ class Converter:
             filenames = [filenames]
 
         lock = Lock()
-        if len(filenames) > 1:
-            print("reading reference files")
-            ddf = self.read_to_ddf(
-                flist=filenames,
-                lock=lock
-            )
+        # if len(filenames) > 1:
+        #     print("reading reference files")
+        ddf = self.read_to_ddf(
+            flist=filenames,
+            lock=lock
+        )
 
-        else:
-            df = self.read_to_df(filenames[0],lock)
-            if isinstance(df,pd.DataFrame):
-                ddf = dd.from_pandas(df)
-            elif isinstance(df,dd.DataFrame):
-                ddf = df
+        if not isinstance(ddf,dd.DataFrame):
+            raise TypeError("ddf must be a dask dataframe, not: ", type(df))
 
         if self.add_derived_vars:
             print("adding derived variables")
             ddf = self.add_derived_variables(ddf)
+
+        ddf = self.convert_units(ddf)
 
         ddf = self.reorder_columns(ddf)
 
@@ -614,11 +616,9 @@ class Converter:
             # this turns 180 into -180
             #
             # not elegant but pyarrow backend does not support modulo operator
-            if df["LONGITUDE"].dtype == "float64[pyarrow]":
-                df["LONGITUDE"] = df["LONGITUDE"].astype("float64")
+            df["LONGITUDE"] = df["LONGITUDE"].astype("float64")
             df["LONGITUDE"] = (df["LONGITUDE"] - 180) % 360 - 180
-            if df["LONGITUDE"].dtype == "float64":
-                df["LONGITUDE"] = df["LONGITUDE"].astype("float64[pyarrow]")
+            df["LONGITUDE"] = df["LONGITUDE"].astype("float64[pyarrow]")
             return df
 
         ddf = ddf.map_partitions(
@@ -762,7 +762,7 @@ class Converter:
             else:
                 raise ValueError("QC value must be an integer or a list of integers.")
 
-            df[param_qc] = qc
+            df[param_qc] = df[param].apply(lambda x: qc if pd.notna(x) else pd.NA)
             df[param_qc] = df[param_qc].astype("uint8[pyarrow]")
 
             if param_qc not in self.schema_pq.names:
@@ -815,6 +815,33 @@ class Converter:
         )
 
         return df
+
+#------------------------------------------------------------------------------#
+## Convert units
+    def convert_units(self, ddf):
+        """Apply unit conversions defined in self.cols_to_convert.
+        
+        Arguments:
+        ddf -- dask dataframe
+        
+        Returns:
+        ddf -- updated dask dataframe with converted units
+        """
+
+        for col, conversion_key in self.cols_to_convert.items():
+            if conversion_key == "skip":
+                continue
+            if conversion_key not in units_conversion.conversion_map:
+                raise ValueError(f"No conversion defined for '{conversion_key}'")
+            if col not in ddf.columns:
+                if col in self.reference_schema.names:
+                    raise ValueError(f"Expected column '{col}' not found in dataframe. This may indicate a typo or missing variable.")
+                # column is not expected in the db_type, so skip conversion
+                continue
+            convert_fn = units_conversion.conversion_map[conversion_key]
+            ddf = convert_fn(ddf, col)
+
+        return ddf
 
 #------------------------------------------------------------------------------#
 ## Update columns
