@@ -26,6 +26,20 @@ SPRAY_GLIDERS:
     processes: True
     dashboard_address: 'localhost:8787'
 
+SAILDRONES:
+    threads_per_worker: 1
+    n_workers: 8
+    memory_limit: '16GiB'
+    processes: True
+    dashboard_address: 'localhost:8787'
+
+OLEANDER-XBT:
+    threads_per_worker: 1
+    n_workers: 8
+    memory_limit: '16GiB'
+    processes: True
+    dashboard_address: 'localhost:8787'
+
 GLODAP:
     threads_per_worker: 2
     n_workers: 12

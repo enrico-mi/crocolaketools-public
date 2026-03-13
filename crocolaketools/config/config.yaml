@@ -33,6 +33,7 @@ CROCOLAKE_BGC:
 ARGO_PHY:
   db: ARGO
   db_type: PHY
+  db_codename: ARGO
   input_path: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1011_PHY_ARGO-CLOUD/current
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1003_PHY_ARGO-QC/current/
   outdir_schema: ./schema/
@@ -44,6 +45,7 @@ ARGO_PHY:
 ARGO_BGC:
   db: ARGO
   db_type: BGC
+  db_codename: ARGO
   input_path: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1011_BGC_ARGO-CLOUD/current
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1003_BGC_ARGO-QC/current/
   outdir_schema: ./schema/
@@ -69,6 +71,7 @@ ARGO-GDAC_BGC:
 GLODAP_PHY:
   db: GLODAP
   db_type: PHY
+  db_codename: GLODAP
   input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v2.2023/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1101_PHY_GLODAP/current/
   outdir_schema: ./schema/
@@ -80,6 +83,7 @@ GLODAP_PHY:
 GLODAP_BGC:
   db: GLODAP
   db_type: BGC
+  db_codename: GLODAP
   input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v2.2023/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1101_BGC_GLODAP/current/
   outdir_schema: ./schema/
@@ -92,6 +96,7 @@ GLODAP_BGC:
 SprayGliders_PHY:
   db: SprayGliders
   db_type: PHY
+  db_codename: SPRAY
   input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/SprayGliders/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1201_PHY_SPRAY/current/
   outdir_schema: ./schemas/
@@ -103,6 +108,7 @@ SprayGliders_PHY:
 SprayGliders_BGC:
   db: SprayGliders
   db_type: BGC
+  db_codename: SPRAY
   input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/SprayGliders/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1201_BGC_SPRAY/current/
   outdir_schema: ./schemas/
@@ -115,6 +121,7 @@ SprayGliders_BGC:
 Saildrones_PHY:
   db: Saildrones
   db_type: PHY
+  db_codename: SAILDRONES
   input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/Saildrones/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1300_PHY_SAILDRONES/current/
   outdir_schema: ./schemas/Saildrones/
@@ -126,11 +133,25 @@ Saildrones_PHY:
 Saildrones_BGC:
   db: Saildrones
   db_type: BGC
+  db_codename: SAILDRONES
   input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/Saildrones/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1300_BGC_SAILDRONES/current/
   outdir_schema: ./schemas/Saildrones/
   fname_pq: 1300_SAILDRONES_BGC
   add_derived_vars: True
+  overwrite: True
+  tmp_path:
+
+# OleanderXBT
+OleanderXBT_PHY:
+  db: OleanderXBT
+  db_type: PHY
+  db_codename: OLEANDER-XBT
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/OleanderXBT/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1401_PHY_OLEANDER-XBT/current/
+  outdir_schema: ./schemas/OleanderXBT/
+  fname_pq: 1401_OLEANDER-XBT_PHY
+  add_derived_vars: False #note that this dataset only has temperature, so no derived vars cannot be computed probably
   overwrite: True
   tmp_path:
 
