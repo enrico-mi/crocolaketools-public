@@ -30,7 +30,7 @@ def oleanderXBT2parquet(oleanderXBT_path=None, outdir_pqt=None, fname_pq=None, u
 
     config_path = importlib.resources.files("crocolaketools.config").joinpath("config_cluster.yaml")
     config_cluster = yaml.safe_load(open(config_path))
-    client = Client(**config_cluster["OLEANDER_XBT"])
+    client = Client(**config_cluster["OLEANDER-XBT"])
 
     if not use_config_file:
         print("Using user-defined configuration")

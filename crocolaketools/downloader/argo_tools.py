@@ -96,7 +96,7 @@ def argo_gdac(gdac_path='./', dataset="bgc", lat_range=None,lon_range=None,start
         Path(gdac_path).mkdir(parents = True, exist_ok = True)
 
     if not dryrun:
-        gdac_url  = 'https://usgodae.org/pub/outgoing/argo/'
+        gdac_url = get_gdac_url()
         args = (gdac_url,gdac_name,gdac_path,True,verbose,checktime,None)
         download_file(args)
 
@@ -165,7 +165,7 @@ def argo_gdac(gdac_path='./', dataset="bgc", lat_range=None,lon_range=None,start
     if not skip_downloads:
         downloaded_filenames = []
         if dac_url_root is None:
-            dac_url_root = 'https://usgodae.org/pub/outgoing/argo/dac/'
+            dac_url_root = get_gdac_url() + 'dac/'
 
         if download_individual_profs:
             for p_idx in gdac_index_subset.index:
@@ -258,6 +258,22 @@ def argo_gdac(gdac_path='./', dataset="bgc", lat_range=None,lon_range=None,start
     else:
 
         return wmoids, gdac_index_subset
+
+#------------------------------------------------------------------------------#
+# get first working gdac url
+def get_gdac_url():
+    urls = [
+        'https://data-argo.ifremer.fr/'
+        'https://www.usgodae.org/ftp/outgoing/argo/',
+    ]
+    for url in urls:
+        try:
+            response = requests.head(url, timeout=5)
+            if response.status_code == 200:
+                return url
+        except requests.RequestException:
+            pass
+    raise RuntimeError(f"None of the URLs are reachable: {urls}")
 
 #------------------------------------------------------------------------------#
 # download all individual profiles in df
