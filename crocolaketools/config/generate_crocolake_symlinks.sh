@@ -65,8 +65,15 @@ for var in "${crocolake_variants[@]}"; do
     mkdir -p $crocolake_ln
 
     # Extract all `outdir_pq` entries from the YAML file
-    yq --arg var "$var" '.[] | select(has("outdir_pq") and .db_type == $var) | .outdir_pq' "$yaml_file" | while read -r outdir_pq; do
-      # Skip the CROCOLAKE outdir_pq itself
+    # yq --arg var "$var" '.[] | select(has("outdir_pq") and .db_type == $var) | .outdir_pq' "$yaml_file" | while read -r outdir_pq; do
+    yq --arg var "$var" \
+      '.[] | select(has("outdir_pq") and .db_type == $var) | {db_codename, outdir_pq}' "$yaml_file" |
+      jq -c . |
+
+      while read -r line; do
+          db_codename=$(jq -r '.db_codename' <<< "$line")
+          outdir_pq=$(jq -r '.outdir_pq' <<< "$line")
+          echo "db_codename: $db_codename, outdir_pq: $outdir_pq"
 
       # skip if it's the crocolake dir or the other db type (bgc/phy)
       if [[ "$outdir_pq" != *"ARGO-CLOUD"* ]] && [[ "$outdir_pq" != *"ARGO-GDAC"* ]] && [[ "$outdir_pq" != *"CROCOLAKE"* ]]; then
@@ -84,9 +91,8 @@ for var in "${crocolake_variants[@]}"; do
 
         # Create a symbolic link in the CROCOLAKE directory
         if [ -d "$outdir_pq" ]; then
-          db_name=$(basename "$outdir_pq")
-          echo "Creating symlink for $db_name in $crocolake_ln (points to: $outdir_pq)"
-          ln -s "$outdir_pq" "$crocolake_ln/$db_name"
+          echo "Creating symlink $crocolake_ln/$db_codename for $db_codename in $crocolake_ln (points to: $outdir_pq)"
+          ln -s "$outdir_pq" "$crocolake_ln/$db_codename"
         else
           echo "Destination directory $outdir_pq does not exist. Skipping symlink creation. This usually happens if you have not generated this parquet dataset first."
         fi

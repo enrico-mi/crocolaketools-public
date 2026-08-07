@@ -70,6 +70,12 @@ def main():
         default="oleanderXBT_download.log",
         help='Path to log file (default: oleanderXBT_download.log).'
     )
+    parser.add_argument(
+        '--yes',
+        '-y',
+        action='store_true',
+        help='Assume yes and skip prompts'
+    )
 
     args = parser.parse_args()
 
@@ -111,10 +117,11 @@ def main():
         print(f"\nWarning: No --url_file or --start_year/--end_year provided. "
             f"Defaulting to download all OleanderXBT files ({min_year}-{max_year}).")
 
-        response = input("Do you want to continue? (y/N): ").strip().lower()
-        if response != 'y':
-            print("Download cancelled.")
-            return
+        if not args.yes:
+            response = input("Do you want to continue? (y/N): ").strip().lower()
+            if response != 'y':
+                print("Download cancelled.")
+                return
 
         years = extract_available_years(args.base_url)
         urls = [f"{args.base_url}/{year}_xbt_nc.zip" for year in years]

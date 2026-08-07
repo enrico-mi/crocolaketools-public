@@ -83,7 +83,7 @@ class DownloaderURLList(Downloader):
 #------------------------------------------------------------------------------#
 ## Unzip file and delete the original zip
     def unzip_file(self, zip_path):
-        """Unzip a file and delete the original zip file, and clean up __MACOSX folders.
+        """Unzip a file and delete the original zip file.
 
         Args:
             zip_path (str): Path to the zip file.
@@ -91,11 +91,6 @@ class DownloaderURLList(Downloader):
         extract_dir = os.path.dirname(zip_path)
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(extract_dir)
-
-        # Remove the __MACOSX directory if it exists
-        macosx_path = os.path.join(extract_dir, "__MACOSX")
-        if os.path.exists(macosx_path) and os.path.isdir(macosx_path):
-            shutil.rmtree(macosx_path)
 
         os.remove(zip_path)
 
@@ -181,4 +176,10 @@ class DownloaderURLList(Downloader):
                     logging.error("Error processing %s: %s", url, e)
 
         logging.info("Download completed. Success: %d, Failed: %d", completed, failed)
+
+        # Remove the __MACOSX directory if it exists
+        macosx_path = os.path.join(self.base_dir, "__MACOSX")
+        if os.path.exists(macosx_path) and os.path.isdir(macosx_path):
+            shutil.rmtree(macosx_path)
+        
         return failed == 0

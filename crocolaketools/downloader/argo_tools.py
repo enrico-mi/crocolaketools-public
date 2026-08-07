@@ -80,6 +80,8 @@ def argo_gdac(gdac_path='./', dataset="bgc", lat_range=None,lon_range=None,start
         "index file is more than 200 MB large.")
         print("If you want to skip updating the index, set checktime=False.")
 
+    if gdac_path[-1] != "/":
+        gdac_path = gdac_path + "/"
     print("gdac_path:")
     print(gdac_path)
     dataset = dataset.lower()
@@ -91,14 +93,16 @@ def argo_gdac(gdac_path='./', dataset="bgc", lat_range=None,lon_range=None,start
         raise ValueError('Dataset variable must be set to bgc or phy.')
 
     gdac_file = os.path.join(gdac_path, gdac_name)
-    if not os.path.isfile( gdac_file ):
-        print(gdac_name + ' not found in ' + gdac_path + '. Downloading it if dryrun set to false.')
-        Path(gdac_path).mkdir(parents = True, exist_ok = True)
-
     if not dryrun:
         gdac_url = get_gdac_url()
         args = (gdac_url,gdac_name,gdac_path,True,verbose,checktime,None)
         download_file(args)
+
+    # Update index file
+    # print('Updating ' + gdac_name + ' at ' + gdac_path + '.')
+    # Path(gdac_path).mkdir(parents = True, exist_ok = True)
+    # args = [gdac_url, gdac_name, gdac_path, True, verbose, checktime, None]
+    # download_file(args)
 
   # Load index file into Pandas DataFrame
     gdac_index = pd.read_csv(
@@ -263,7 +267,7 @@ def argo_gdac(gdac_path='./', dataset="bgc", lat_range=None,lon_range=None,start
 # get first working gdac url
 def get_gdac_url():
     urls = [
-        'https://data-argo.ifremer.fr/'
+        'https://data-argo.ifremer.fr/',
         'https://www.usgodae.org/ftp/outgoing/argo/',
     ]
     for url in urls:
@@ -415,8 +419,9 @@ def download_file(args):
             return
 
         with open(save_to+filename,'wb') as out_file:
-            shutil.copyfileobj(response.raw,out_file)
-            del response
+            for chunk in response.iter_content(chunk_size=None):
+                out_file.write(chunk)
+
         if verbose: print(rank_str + '>>> Successfully downloaded ' + filename + '.')
 
     except Exception as e:
