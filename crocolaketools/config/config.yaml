@@ -72,7 +72,7 @@ GLODAP_PHY:
   db: GLODAP
   db_type: PHY
   db_codename: GLODAP
-  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v2.2023/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v3.2026/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1101_PHY_GLODAP/current/
   outdir_schema: ./schema/
   fname_pq: 1101_GLODAP_PHY
@@ -84,7 +84,7 @@ GLODAP_BGC:
   db: GLODAP
   db_type: BGC
   db_codename: GLODAP
-  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v2.2023/
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/GLODAP/v3.2026/
   outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1101_BGC_GLODAP/current/
   outdir_schema: ./schema/
   fname_pq: 1101_GLODAP_BGC
