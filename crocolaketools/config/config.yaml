@@ -92,6 +92,29 @@ GLODAP_BGC:
   overwrite: True
   tmp_path:
 
+# SPOTS
+SPOTS_PHY:
+  db: SPOTS
+  db_type: PHY
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/SPOTS/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1501_PHY_SPOTS/current/
+  outdir_schema: ./schemas/SPOTS/
+  fname_pq: demo_SPOTS_PHY
+  add_derived_vars: True
+  overwrite: True
+  tmp_path:
+
+SPOTS_BGC:
+  db: SPOTS
+  db_type: BGC
+  input_path: /vortexfs1/share/boom/users/enrico.milanese/originalDatabases/SPOTS/
+  outdir_pq: /vortexfs1/share/boom/users/enrico.milanese/myDatabases/1501_BGC_SPOTS/current/
+  outdir_schema: ./schemas/SPOTS/
+  fname_pq: demo_SPOTS_BGC
+  add_derived_vars: True
+  overwrite: True
+  tmp_path:
+
 # Spray Gliders
 SprayGliders_PHY:
   db: SprayGliders
